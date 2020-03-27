@@ -6,5 +6,15 @@
 }
 
 .formDiv{
-    margin: 5% 25%;
+    margin: 5% 15%;
+}
+
+.newP{
+	margin: 5% 20%;
+}
+
+.newHeader{
+	margin-top: 1%;
+	margin-bottom: 1%;
+	margin-left: 5%;
 }
