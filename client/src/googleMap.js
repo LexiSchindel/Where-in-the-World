@@ -4,8 +4,8 @@ function initMap() {
 	var oregonState = {lat: 44.564466, lng: -123.279528};
 	// The map, centered at OSU
 	var map = new google.maps.Map(
-		document.getElementById('map'), {zoom: 4, center: oregonState});
-	// The marker, positioned at Uluru
+		document.getElementById('map'), {zoom: 6, center: oregonState});
+	// The marker, positioned at Oregon State
 	var marker = new google.maps.Marker({position: oregonState, map: map});
 
   }
