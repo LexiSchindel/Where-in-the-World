@@ -60,7 +60,22 @@ app.get("/", function(req, res){
 
 //other index render
 app.get ("/index", function(req, res){
-  res.render("index");
+  let context = {};
+  let result = [];
+  pool.query("SELECT * FROM maps", (err, rows) => 
+    {
+      if(err){
+          console.log(err);
+          return;
+      }
+      
+      result = rows.rows;
+      // console.log("rows: ", result);
+
+      context.results = JSON.stringify(result);
+      console.log("context: ", context);
+      res.render("index", context);
+    });
 });
 
 //about
