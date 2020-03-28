@@ -8,14 +8,14 @@ app.use(bodyParser.json());
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 // postgres database set up
-// const  { Client }  = require('pg');
+const  { Client }  = require('pg');
 
-// const pgClient = new Client({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: false,
-// });
+const pgClient = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
 
-// pgClient.connect();
+pgClient.connect();
 
 console.log("running");
 
