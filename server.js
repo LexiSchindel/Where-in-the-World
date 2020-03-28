@@ -24,12 +24,12 @@ app.get ("/", function(req, res){
 });
 
 //about
-app.get ("/about.html", function(req, res){
+app.get ("/about", function(req, res){
   res.render("about");
 });
 
 //stats
-app.get ("/stats.html", function(req, res){
+app.get ("/stats", function(req, res){
   res.render("stats");
 });
 
