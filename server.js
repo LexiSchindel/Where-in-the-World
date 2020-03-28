@@ -2,37 +2,36 @@ var express = require('express');
 const Client = require("@googlemaps/google-maps-services-js").Client;
 var app = express();
 var bodyParser = require('body-parser');
+var handlebars = require('express-handlebars').create({defaultLayout:'main'});
+
 const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static('/client/public'))
+
+//static files
+app.use(express.static('client'));
+
+app.engine('handlebars', handlebars.engine);
+app.set('view engine', 'handlebars');
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-// postgres database set up
-const  { Client }  = require('pg');
-
-const pgClient = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
-
-pgClient.connect();
 
 console.log("running");
 
-// create table
-/* const query = pgClient.query(
-    'CREATE TABLE maps(id SERIAL PRIMARY KEY, address VARCHAR(100) not null, email VARCHAR(40))');
-   query.on('end', () => { pgClient.end(); }); */
+//index
+app.get ("/", function(req, res){
+  res.render("index");
+});
 
+//about
+app.get ("/about.html", function(req, res){
+  res.render("about");
+});
 
-// client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-//   if (err) throw err;
-//   for (let row of res.rows) {
-//     console.log(JSON.stringify(row));
-//   }
-//   client.end();
-// });
+//stats
+app.get ("/stats.html", function(req, res){
+  res.render("stats");
+});
 
 app.post ("/", async (request, response) => {
   const email = request.body.email;
