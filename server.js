@@ -43,6 +43,11 @@ app.get ("/", function(req, res){
   res.render("index");
 });
 
+//other index render
+app.get ("/index", function(req, res){
+  res.render("index");
+});
+
 //about
 app.get ("/about", function(req, res){
   res.render("about");
