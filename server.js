@@ -26,9 +26,13 @@ const { Pool } = require('pg');
 //   port: 5432,
 // });
 
-//heroku database connection
+// heroku database connection
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PW,
+  port: process.env.DB_PORT,
   ssl: true,
 });
 
@@ -93,7 +97,6 @@ app.post ("/", async (request, response) => {
       context.results = results;
 
       insertDB(latitude, longitude, city, state, email);
-      // getAllDB();
 
       console.log("context ", context);
 
@@ -114,12 +117,14 @@ function insertDB(latitude, longitude, city, state, email){
       }
       else{
         console.log(result.rows);
+
+        return getAllDB();
       }
     });
 }
 
 function getAllDB(){
-  pool.query("SELECT * FROM maps", function(err, rows, fields){
+  pool.query("SELECT * FROM maps", function(err, rows){
       if(err){
           console.log(err);
           return;
@@ -127,4 +132,5 @@ function getAllDB(){
 
       console.log("rows: ", rows);
     });
+  return;
 }
