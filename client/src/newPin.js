@@ -8,9 +8,9 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     payload.email = document.getElementById('inputEmail4').value;
 
     payload.address = document.getElementById('inputAddress').value;
-    payload.address += '+' + document.getElementById('inputCity').value;
-    payload.address += '+' + document.getElementById('inputState').value;
-    payload.address += '+' + document.getElementById('inputZip').value;
+    payload.address += ' ' + document.getElementById('inputCity').value;
+    payload.address += ' ' + document.getElementById('inputState').value;
+    payload.address += ' ' + document.getElementById('inputZip').value;
 
     req.open('POST', url, true);
     req.setRequestHeader('Content-Type', 'application/json');
