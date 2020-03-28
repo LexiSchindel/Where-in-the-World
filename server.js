@@ -39,8 +39,23 @@ const pool = new Pool({
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 //index
-app.get ("/", function(req, res){
-  res.render("index");
+app.get("/", function(req, res){
+  let context = {};
+  let result = [];
+  pool.query("SELECT * FROM maps", (err, rows) => 
+    {
+      if(err){
+          console.log(err);
+          return;
+      }
+      
+      result = rows.rows;
+      // console.log("rows: ", result);
+
+      context.results = JSON.stringify(result);
+      console.log("context: ", context);
+      res.render("index", context);
+    });
 });
 
 //other index render
@@ -108,13 +123,37 @@ app.post ("/", async (request, response) => {
         "state": state,
         "country": country});
 
-      context.results = results;
+      var context = {}; //for returning to post request
 
-      insertDB(latitude, longitude, city, state, email);
+      //insert into db
+      pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
+        [latitude, longitude, city, state, email], function(err, result){
+          if(err){
+              console.log(err);
+              return;
+          }
+          else{
+            console.log("insert db");
+            
+            //get updated data
+            pool.query("SELECT * FROM maps", (err, rows) => {
+              if(err){
+                  console.log(err);
+                  return;
+              }
+              
+              result = rows.rows;
+              // console.log("rows: ", result);
+        
+              context.results = JSON.stringify(result);
 
-      console.log("context ", context);
+              response.send(context);
+              
+            });
+          }
+        });
 
-      response.send(context);
+
     })
     .catch(e => {
       console.log("e ", e);
@@ -123,28 +162,23 @@ app.post ("/", async (request, response) => {
 })
 
 function insertDB(latitude, longitude, city, state, email){
-  pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
-    [latitude, longitude, city, state, email], function(err, result){
-      if(err){
-          console.log(err);
-          return;
-      }
-      else{
-        console.log(result.rows);
-
-        return getAllDB();
-      }
-    });
+  
 }
 
 function getAllDB(){
-  pool.query("SELECT * FROM maps", function(err, rows){
+  let result;
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT * FROM maps", (err, rows) => {
       if(err){
           console.log(err);
           return;
       }
+      
+      result = rows.rows;
+      // console.log("rows: ", result);
 
-      console.log("rows: ", rows);
+      return JSON.stringify(result);
+      
     });
-  return;
+  });
 }
