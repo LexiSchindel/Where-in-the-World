@@ -68,9 +68,9 @@ app.post ("/", async (request, response) => {
       console.log("r.data ", r.data);
       latitude = r.data.results[0].geometry.location.lat;
       longitude = r.data.results[0].geometry.location.lng;
-      city = r.data.results[0].address_components[4].long_name;
-      state = r.data.results[0].address_components[6].long_name;
-      country = r.data.results[0].address_components[7].long_name;
+      city = r.data.results[0].address_components[2].long_name;
+      state = r.data.results[0].address_components[4].long_name;
+      country = r.data.results[0].address_components[5].long_name;
 
       console.log("latitude ", latitude, "longitude ", longitude);
       console.log("city ", city, "state ", state, "country ", country);
