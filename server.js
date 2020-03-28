@@ -75,9 +75,21 @@ app.post ("/", async (request, response) => {
       console.log("r.data ", r.data);
       latitude = r.data.results[0].geometry.location.lat;
       longitude = r.data.results[0].geometry.location.lng;
-      city = r.data.results[0].address_components[2].long_name;
-      state = r.data.results[0].address_components[4].long_name;
-      country = r.data.results[0].address_components[5].long_name;
+      let city = '';
+      let state= '';
+      let country = '';
+      // loop through address_components to look for data of a specific type
+      for (let i = 0; i < r.data.results[0].address_components.length; i++) {
+        if (r.data.results[0].address_components[i].types[0] == "locality") {
+          city = r.data.results[0].address_components[i].long_name;
+        }
+        else if (r.data.results[0].address_components[i].types[0] == "administrative_area_level_1") {
+          state = r.data.results[0].address_components[i].long_name;
+        }
+        else if (r.data.results[0].address_components[i].types[0] == "country") {
+          country = r.data.results[0].address_components[i].long_name;
+        }
+      }
 
       console.log("latitude ", latitude, "longitude ", longitude);
       console.log("city ", city, "state ", state, "country ", country);
