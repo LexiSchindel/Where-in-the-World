@@ -18,11 +18,18 @@ app.set('view engine', 'handlebars');
 //database connection (local)
 const { Pool } = require('pg');
 
+//localhost connection for testing
+// const pool = new Pool({
+//   host: 'localhost',
+//   database: 'map',
+//   password: 'flyhomes',
+//   port: 5432,
+// });
+
+//heroku database connection
 const pool = new Pool({
-  host: 'localhost',
-  database: 'map',
-  password: 'flyhomes',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
