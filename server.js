@@ -1,24 +1,25 @@
 var express = require('express');
-const Client = require("@googlemaps/google-maps-services-js").Client;
+const mapClient = require("@googlemaps/google-maps-services-js").Client;
 var app = express();
+var bodyParser = require('body-parser');
 const PORT = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // postgres database set up
-const { Client } = require('pg');
+const  { Client }  = require('pg');
 
-const client = new Client({
+const pgClient = new Client({
   connectionString: process.env.DATABASE_URL,
-  ssl: true,
+  ssl: false,
 });
 
-client.connect();
+pgClient.connect();
 
 // create table
-const query = client.query(
+/* const query = pgClient.query(
     'CREATE TABLE maps(id SERIAL PRIMARY KEY, address VARCHAR(100) not null, email VARCHAR(40))');
-  query.on('end', () => { client.end(); });
+   query.on('end', () => { pgClient.end(); }); */
 
 
 // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
@@ -33,7 +34,7 @@ app.post ("/", async (request, response) => {
   const email = request.body.email;
   const address = request.body.address;
 
-client
+mapClient
   .geocode({
     params: {
       address: address,
