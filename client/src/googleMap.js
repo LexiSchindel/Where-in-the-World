@@ -29,7 +29,7 @@
  * 		the map with data from the database.
  * 
  **/
-function initMap() {
+function initMap(rows) {
 	// Create variable with OSU coordinates
 	var oregonState = {lat: 44.564466, lng: -123.279528};
 	var centerOfUSA = {lat: 39.8283, lng: -98.5795};
@@ -47,7 +47,6 @@ function initMap() {
 			  }
 		});
 
-	
 	// Creates a marker, positioned at Oregon State
 	// var marker = new google.maps.Marker({
 	// 	position: oregonState, 
@@ -55,7 +54,6 @@ function initMap() {
 	// 	// label: 'OSU',
 	// 	map: map
 	// });
-
 
 	var oregonStateMarker = [
 		{
@@ -70,37 +68,37 @@ function initMap() {
 		}
 	]
 
-	var rows = [
-		{
-		  id: 1,
-		  latitude: 47.600227,
-		  longitude: -122.310827,
-		  city: 'Seattle',
-		  state: 'Washington',
-		  email: 'email@email.com'
-		},
-		{
-		  id: 2,
-		  latitude: 47.600227,
-		  longitude: -122.310827,
-		  city: 'Seattle',
-		  state: 'Washington',
-		  email: 'email@email.com'
-		},
-		{
-		  id: 3,
-		  latitude: 39.4398657,
-		  longitude: -98.69859749999999,
-		  city: 'Osborne',
-		  state: 'Kansas',
-		  email: 'email@email.com'
-		}
-	  ]
+	// var rows = [
+	// 	{
+	// 	  id: 0,
+	// 	  latitude: 47.600227,
+	// 	  longitude: -122.310827,
+	// 	  city: 'Seattle',
+	// 	  state: 'Washington',
+	// 	  email: 'email@email.com'
+	// 	},
+	// 	{
+	// 	  id: 2,
+	// 	  latitude: 47.600227,
+	// 	  longitude: -122.310827,
+	// 	  city: 'Seattle',
+	// 	  state: 'Washington',
+	// 	  email: 'email@email.com'
+	// 	},
+	// 	{
+	// 	  id: 3,
+	// 	  latitude: 39.4398657,
+	// 	  longitude: -98.69859749999999,
+	// 	  city: 'Osborne',
+	// 	  state: 'Kansas',
+	// 	  email: 'email@email.com'
+	// 	}
+	//   ]
+
+	//   console.log(rows);
 
 	populateMap(oregonStateMarker, map);
 	populateMap(rows, map);
-
-	
 
 }
 
