@@ -84,9 +84,6 @@ app.post ("/", async (request, response) => {
       console.log("r.data ", r.data);
       latitude = r.data.results[0].geometry.location.lat;
       longitude = r.data.results[0].geometry.location.lng;
-      let city = '';
-      let state= '';
-      let country = '';
       // loop through address_components to look for data of a specific type
       for (let i = 0; i < r.data.results[0].address_components.length; i++) {
         if (r.data.results[0].address_components[i].types[0] == "locality") {
