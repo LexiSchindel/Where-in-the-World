@@ -26,6 +26,7 @@
     "handlebars": "^4.7.3",
     "node-geocoder": "^3.26.0",
     "pg": "^7.18.2",
-    "save": "^2.4.0"
+    "save": "^2.4.0",
+    "xmlhttprequest": "^1.8.0"
   }
 }

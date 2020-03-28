@@ -114,3 +114,6 @@ dist
 # JetBrains files 
 
 .idea/*
+
+#env variables
+.env
