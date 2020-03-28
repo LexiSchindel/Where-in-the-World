@@ -1,5 +1,5 @@
 var express = require('express');
-const mapClient = require("@googlemaps/google-maps-services-js").Client;
+const Client = require("@googlemaps/google-maps-services-js").Client;
 var app = express();
 var bodyParser = require('body-parser');
 const port = process.env.PORT || 5000;
@@ -7,16 +7,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
 // postgres database set up
-const  { Client }  = require('pg');
+// const  { Client }  = require('pg');
 
-const pgClient = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+// const pgClient = new Client({
+//   connectionString: process.env.DATABASE_URL,
+//   ssl: false,
+// });
 
-pgClient.connect();
+// pgClient.connect();
 
 console.log("running");
 
@@ -37,17 +36,19 @@ console.log("running");
 app.post ("/", async (request, response) => {
   const email = request.body.email;
   const address = request.body.address;
+  console.log(address);
+  const client = await new Client({address});
 
-mapClient
+client
   .geocode({
     params: {
-      address: address,
+      address: `${address}`,
       key: process.env.GOOGLE_MAPS_API_KEY
     },
     timeout: 1000 // milliseconds
   })
   .then(r => {
-    console.log(r.data.results[0].geocode);
+    console.log(r.data.results.geometry.location.lat);
   })
   .catch(e => {
     console.log(e);
