@@ -17,7 +17,7 @@ client.connect();
 
 // create table
 const query = client.query(
-    'CREATE TABLE maps(id SERIAL PRIMARY KEY, address VARCHAR(100) not null, email VARCHAR(40))');
+    'CREATE TABLE maps(id SERIAL PRIMARY KEY, lat DOUBLE not null, long DOUBLE not null, city VARCHAR(100), state VARCHAR(50), email VARCHAR(40))');
   query.on('end', () => { client.end(); });
 
 
