@@ -1,7 +1,7 @@
 var express = require('express');
-
+const Client = require("@googlemaps/google-maps-services-js").Client;
 var app = express();
-
+const PORT = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -28,3 +28,24 @@ const query = client.query(
 //   }
 //   client.end();
 // });
+
+app.post ("/", async (request, response) => {
+  const email = request.body.email;
+  const address = request.body.address;
+
+client
+  .geocode({
+    params: {
+      address: address,
+      key: process.env.GOOGLE_MAPS_API_KEY
+    },
+    timeout: 1000 // milliseconds
+  })
+  .then(r => {
+    console.log(r.data.results[0].geocode);
+  })
+  .catch(e => {
+    console.log(e);
+  });
+
+})
