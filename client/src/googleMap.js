@@ -37,7 +37,10 @@ function initMap() {
 	var map = new google.maps.Map(
 		document.getElementById('map'), {
 			zoom: 4, 
-			center: centerOfUSA,
+			center: {
+				lat: parseFloat(centerOfUSA.lat),
+				lng: parseFloat(centerOfUSA.lng)
+			},
 			mapTypeControl: true,
 			mapTypeControlOptions: {
 				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
@@ -53,25 +56,51 @@ function initMap() {
 	// 	map: map
 	// });
 
-	// TESTING
-	// var text = '{ "JSONdata" : [' +
-	// '{ "email":"portland@email.com" , "lat":"45.5051" , "lng":"-122.6750" },' +
-	// '{ "email":"seattle@email.com" ,"lat":"47.617165" , "lng":"-122.338949" },' +
-	// '{ "email":"kansas@email.com" ,"lat":"39.0119" , "lng":"-98.4842" },' +
-	// '{ "email":"la@email.com" ,"lat":"34.019770" , "lng":"-118.497292" } ]}';
-  
-	// var obj = JSON.parse(text);
 
-	var obj = 
-	[
-		{email: 'OSU.edu', lat: oregonState.lat, lng: oregonState.lng, animation: google.maps.Animation.DROP, icon: '../files/osu_logo_50x50.png'},
-		{email: 'portland@email.com', lat: 45.5051, lng: -122.6750},
-		{email: 'seattle@email.com', lat: 47.617165, lng: -122.338949},
-		{email: 'shoreline@email.com', lat: 47.7560, lng: -122.3457},
-		{email: 'kansas@email.com', lat: 39.0119, lng: -98.4842},
+	var oregonStateMarker = [
+		{
+		  id: 0,
+		  latitude: oregonState.lat,
+		  longitude: oregonState.lng,
+		  city: 'Corvallis',
+		  state: 'Oregon',
+		  email: 'OSU@osu.edu',
+		  animation: google.maps.Animation.DROP, 
+		  icon: '../files/osu_logo_50x50.png'
+		}
 	]
 
-	populateMap(obj, map);
+	var rows = [
+		{
+		  id: 1,
+		  latitude: 47.600227,
+		  longitude: -122.310827,
+		  city: 'Seattle',
+		  state: 'Washington',
+		  email: 'email@email.com'
+		},
+		{
+		  id: 2,
+		  latitude: 47.600227,
+		  longitude: -122.310827,
+		  city: 'Seattle',
+		  state: 'Washington',
+		  email: 'email@email.com'
+		},
+		{
+		  id: 3,
+		  latitude: 39.4398657,
+		  longitude: -98.69859749999999,
+		  city: 'Osborne',
+		  state: 'Kansas',
+		  email: 'email@email.com'
+		}
+	  ]
+
+	populateMap(oregonStateMarker, map);
+	populateMap(rows, map);
+
+	
 
 }
 
@@ -102,9 +131,11 @@ function populateMap(mapData, map){
 
 	for (var i=0; i < mapData.length; i++)
 	{
-		var latLng = new google.maps.LatLng(mapData[i].lat, mapData[i].lng);
 		var marker = new google.maps.Marker({
-			position: latLng,
+			position: {
+				lat: parseFloat(mapData[i].latitude),
+				lng: parseFloat(mapData[i].longitude)
+			},
 			map: map,
 			animation: mapData[i].animation,
 			icon: mapData[i].icon
@@ -115,18 +146,18 @@ function populateMap(mapData, map){
 	
 	function attachInfoWindow(marker, email) {
 		var infowindow = new google.maps.InfoWindow({
-			content: mapData[i].email,
-			position: marker
+			content: email,
+			position: {
+				lat: parseFloat(marker.position.lat),
+				lng: parseFloat(marker.position.lng)
+			}
 		});
 	
 		marker.addListener('click', function() {
 			infowindow.open(marker.get('map'), marker);
-			// alert(marker.position);
 		}); 
 	}
 	
 }
-
-
 
 
