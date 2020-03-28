@@ -3,7 +3,6 @@ const Client = require("@googlemaps/google-maps-services-js").Client;
 var app = express();
 var bodyParser = require('body-parser');
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -12,12 +11,21 @@ app.use(bodyParser.json());
 //static files
 app.use(express.static('client'));
 
+//handlbars
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+//database connection (local)
+const { Pool } = require('pg');
 
-console.log("running");
+const pool = new Pool({
+  host: 'localhost',
+  database: 'map',
+  password: 'flyhomes',
+  port: 5432,
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 //index
 app.get ("/", function(req, res){
@@ -77,6 +85,9 @@ app.post ("/", async (request, response) => {
 
       context.results = results;
 
+      insertDB(latitude, longitude, city, state, email);
+      // getAllDB();
+
       console.log("context ", context);
 
       response.send(context);
@@ -86,3 +97,27 @@ app.post ("/", async (request, response) => {
     });
 
 })
+
+function insertDB(latitude, longitude, city, state, email){
+  pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
+    [latitude, longitude, city, state, email], function(err, result){
+      if(err){
+          console.log(err);
+          return;
+      }
+      else{
+        console.log(result.rows);
+      }
+    });
+}
+
+function getAllDB(){
+  pool.query("SELECT * FROM maps", function(err, rows, fields){
+      if(err){
+          console.log(err);
+          return;
+      }
+
+      console.log("rows: ", rows);
+    });
+}
