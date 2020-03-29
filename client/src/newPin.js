@@ -78,6 +78,8 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     req.addEventListener('load',function(){
         if(req.status >= 200 && req.status < 400){
             postResponse = JSON.parse(req.responseText);
+
+            let noLocationFound = JSON.parse(postReseponse.noResults);
             //does db already have email, then we updated
             let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
             // console.log("isUpdate: ", dbHasEmail[0].dbHasEmail);
