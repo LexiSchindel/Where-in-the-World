@@ -24,19 +24,29 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
 
     // ugly validating.
     let emailPatt = new RegExp("@oregonstate.edu");
-    if(!emailPatt.test(email.toString()) || email.toString() === ""){
+    if(!emailPatt.test(email.toString())){
+        alert("Please enter an oregonstate.edu email address.")
+        event.preventDefault();
+        return;
+    }
+    if(email.toString() === ""){
+        event.preventDefault();
         return;
     }
     if(address.toString() === ""){
+        event.preventDefault();
         return;
     }
     if(city.toString() === ""){
+        event.preventDefault();
         return;
     }
     if(state.toString() === ""){
+        event.preventDefault();
         return;
     }
     if(zip.toString() === ""){
+        event.preventDefault();
         return;
     }
 
