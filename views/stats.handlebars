@@ -24,7 +24,7 @@
         Add your marker to the map too so even more students can see they have peers nearby!</p>
 </div>
 
-<div class="statsTable">
+<div class="statsTables">
   <table class="table table-bordered table-hover" id ="cityTable" onload="cityTable()">
     <thead class="thead-dark">
       <tr>
@@ -32,7 +32,18 @@
           <th scope="col">Total</th>
       </tr>
     </thead>
-    <tbody id="tbody">
+    <tbody id="cityBody">
+    </tbody>
+  </table>
+
+  <table class="table table-bordered table-hover" id ="stateTable" onload="stateTable()">
+    <thead class="thead-dark">
+      <tr>
+          <th scope="col">State</th>
+          <th scope="col">Total</th>
+      </tr>
+    </thead>
+    <tbody id="stateBody">
     </tbody>
   </table>
 </div>
