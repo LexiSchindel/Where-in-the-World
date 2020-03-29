@@ -149,7 +149,8 @@ function initStateProgressBar(data){
         caption = document.createElement('div');
 		// caption.className = "col-2 offset-sm-2";
         caption.className = "col-xl-3";
-        caption.textContent = data[i].state + " (" + data[i].total + ")";
+        // caption.textContent = data[i].state + " (" + data[i].total + ")";
+        caption.textContent = data[i].state;
 
         progressDivider = document.createElement('div');
         progressDivider.className = 'col-xl-9';
