@@ -159,7 +159,6 @@ app.post ("/", async (request, response) => {
 
       var context = {}; //for returning to post request
 
-<<<<<<< HEAD
       //insert into db
       pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
         [latitude, longitude, city, state, email], function(err, result){
@@ -188,9 +187,6 @@ app.post ("/", async (request, response) => {
           }
         });
 
-=======
-      context.results = insertDB(latitude, longitude, city, state, email, callback);
->>>>>>> 56fe0510ea0f0ee99d21a9994fd88107b37f5350
 
     })
     .catch(e => {
