@@ -30,23 +30,18 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
         return;
     }
     if(email.toString() === ""){
-        event.preventDefault();
         return;
     }
     if(address.toString() === ""){
-        event.preventDefault();
         return;
     }
     if(city.toString() === ""){
-        event.preventDefault();
         return;
     }
     if(state.toString() === ""){
-        event.preventDefault();
         return;
     }
     if(zip.toString() === ""){
-        event.preventDefault();
         return;
     }
 
