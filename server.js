@@ -35,26 +35,11 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
  * 
  * parameters: none
  * 
- * returns: all current data in database and 
- * renders homepage
+ * returns: renders index page
  ********************************************/
 
 app.get("/", function(req, res){
-  let context = {};
-  let result = [];
-  pool.query("SELECT * FROM maps", (err, rows) => 
-    {
-      if(err){
-          console.log(err);
-          return;
-      }
-      
-      result = rows.rows;
-
-      context.results = JSON.stringify(result);
-      console.log("context: ", context);
-      res.render("index", context);
-    });
+  res.render("index");
 });
 
 /*******************************************
@@ -110,25 +95,11 @@ app.get("/dataTable", function(req, res){
  * 
  * parameter: none
  * 
- * returns: returns all data in database
+ * returns: renders index page
  ********************************************/
 
 app.get ("/index", function(req, res){
-  let context = {};
-  let result = [];
-  pool.query("SELECT * FROM maps", (err, rows) => 
-    {
-      if(err){
-          console.log(err);
-          return;
-      }
-      
-      result = rows.rows;
-
-      context.results = JSON.stringify(result);
-      console.log("context: ", context);
-      res.render("index", context);
-    });
+    res.render("index");
 });
 
 //get data middle route
@@ -193,8 +164,6 @@ app.post ("/", async (request, response) => {
   var state;
   var country;
 
-  var context = {}; //for returning to post request
-
   const client = await new Client({address});
 
   client
@@ -236,32 +205,52 @@ app.post ("/", async (request, response) => {
       var context = {}; //for returning to post request
 
       //inserts all data from post into database
-      pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
-        [latitude, longitude, city, state, email], function(err, result){
+      pool.query("SELECT email FROM maps WHERE lower(email) = lower($1)", 
+        [email], function(err, rows){
           if(err){
               console.log(err);
               return;
           }
           else{
-            console.log("insert db");
-            
-            //get updated data
-            pool.query("SELECT * FROM maps", (err, rows) => {
-              if(err){
-                  console.log(err);
-                  return;
-              }
-              
-              result = rows.rows;
-              // console.log("rows: ", result);
-
-              context.results = JSON.stringify(result);
-
+            console.log('check email data: ', rows.rows);
+            if (rows.rows.length > 0){
+              console.log('already have email in db');
+              context.results = JSON.stringify([{'hasEmail':true}]);
               response.send(context);
-              
-            });
+              return;
+            }
+            //otherwise we don't have email so perform insert
+            else{
+
+              //inserts all data from post into database
+              pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
+                [latitude, longitude, city, state, email], function(err, result){
+                  if(err){
+                      console.log(err);
+                      return;
+                  }
+                  else{
+                    console.log("insert db");
+                    
+                    //get updated data
+                    pool.query("SELECT * FROM maps", (err, rows) => {
+                      if(err){
+                          console.log(err);
+                          return;
+                      }
+                      
+                      result = rows.rows;
+
+                      context.results = JSON.stringify(result);
+
+                      response.send(context);
+                      
+                    });
+                  }
+                });
+            }
           }
-        });
+      });
     })
     .catch(e => {
       console.log("e ", e);
