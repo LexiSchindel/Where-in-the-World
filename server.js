@@ -58,6 +58,25 @@ app.get("/", function(req, res){
     });
 });
 
+app.get("/data", function(req, res){
+  let context = {};
+  let result = [];
+  pool.query("SELECT city, count(id) as total FROM maps GROUP BY city ORDER BY total DESC", (err, rows) => 
+    {
+      if(err){
+          console.log(err);
+          return;
+      }
+      else{
+        result = rows.rows;
+        console.log("getdata ", result);
+
+        context.results = JSON.stringify(result);
+        res.send(context);
+      }
+    });
+});
+
 //other index render
 app.get ("/index", function(req, res){
   let context = {};
@@ -160,7 +179,7 @@ app.post ("/", async (request, response) => {
               result = rows.rows;
               // console.log("rows: ", result);
         
-              context.results = JSON.stringify(result);
+              context.results = result;
 
               response.send(context);
               
