@@ -58,10 +58,13 @@ app.get("/", function(req, res){
     });
 });
 
-app.get("/data", function(req, res){
+app.get("/dataTable", function(req, res){
   let context = {};
   let result = [];
-  pool.query("SELECT city, count(id) as total FROM maps GROUP BY city ORDER BY total DESC", (err, rows) => 
+
+  console.log('req', req.query);
+  if(req.query.type === 'city'){
+    pool.query("SELECT (city || ', ' || state) as city, count(id) as total FROM maps GROUP BY 1 ORDER BY 2 DESC, 1", (err, rows) => 
     {
       if(err){
           console.log(err);
@@ -75,6 +78,23 @@ app.get("/data", function(req, res){
         res.send(context);
       }
     });
+  }
+  else if(req.query.type === 'state'){
+    pool.query("SELECT state, count(id) as total FROM maps GROUP BY state ORDER BY total DESC, 1", (err, rows) => 
+      {
+        if(err){
+            console.log(err);
+            return;
+        }
+        else{
+          result = rows.rows;
+          console.log("getdata ", result);
+
+          context.results = JSON.stringify(result);
+          res.send(context);
+        }
+      });
+  }
 });
 
 //other index render
