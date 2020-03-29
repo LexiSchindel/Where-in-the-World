@@ -24,12 +24,12 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
 
     // ugly validating.
     let emailPatt = new RegExp("@oregonstate.edu");
+    if(email.toString() === ""){
+        return;
+    }
     if(!emailPatt.test(email.toString())){
         alert("Please enter an oregonstate.edu email address.")
         event.preventDefault();
-        return;
-    }
-    if(email.toString() === ""){
         return;
     }
     if(address.toString() === ""){
