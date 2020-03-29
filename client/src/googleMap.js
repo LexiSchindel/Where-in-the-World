@@ -10,17 +10,15 @@
  * 		
  ******************************************************************************/
 
-
-
 /**
  * 
- * function initMap()
+ * function initMap(rows)
  * 
  * Summary: 
  * 		Initializes the map
  * 
  * Parameters:	
- * 		none
+ * 		Object containing rows of location data
  * 
  * Returns:	
  * 		nothing
@@ -33,8 +31,10 @@
 function initMap(rows) {
 	// Create variable with OSU coordinates
 	var oregonState = {lat: 44.564466, lng: -123.279528};
+	// Create variable with Center of USA coordinates
 	var centerOfUSA = {lat: 39.8283, lng: -98.5795};
-	// Creates map, centered at OSU
+	
+	// Creates map, centered at variable
 	var map = new google.maps.Map(
 		document.getElementById('map'), {
 			zoom: 4, 
@@ -48,14 +48,7 @@ function initMap(rows) {
 			  }
 		});
 
-	// Creates a marker, positioned at Oregon State
-	// var marker = new google.maps.Marker({
-	// 	position: oregonState, 
-	// 	animation: google.maps.Animation.DROP,
-	// 	// label: 'OSU',
-	// 	map: map
-	// });
-
+	// Create OSU marker and populate the map
 	var oregonStateMarker = [
 		{
 		  id: 0,
@@ -63,79 +56,33 @@ function initMap(rows) {
 		  longitude: oregonState.lng,
 		  city: 'Corvallis',
 		  state: 'Oregon',
-		  email: 'OSU@osu.edu',
+		  email: 'ecampus@oregonstate.edu',
 		  animation: google.maps.Animation.DROP, 
 		  icon: '../files/osu_logo_50x50.png'
 		}
 	]
-
 	populateMap(oregonStateMarker, map);
 
 
-	function getData(url){
-		let req = new XMLHttpRequest();
-		let getResponse;
-	
-		req.open('GET', url, true);
-		req.setRequestHeader('Content-Type', 'application/json');
-		req.addEventListener('load',function(){
-			if(req.status >= 200 && req.status < 400){
-				// console.log("response from server: " + req.responseText);
-				getResponse = JSON.parse(req.responseText);
-				console.log("response: ", getResponse);
-	
-				// populateMap(JSON.parse(getResponse.results), map);
-				
-				callback(JSON.parse(getResponse.results));
-				// return JSON.parse(getResponse.results);
-			} else {
-				console.log("Error in network request: " + req.statusText);
-			}});
-		req.send(null);
-	}
+	// Request data from server and populate the map
+	let url = "/getData";
+	let req = new XMLHttpRequest();
+	let getResponse;
 
-	// var rows = getData("/getdata");
-	getData("/getData");
+	req.open('GET', url, true);
+	req.setRequestHeader('Content-Type', 'application/json');
+	req.addEventListener('load',function(){
+		if(req.status >= 200 && req.status < 400){
+			
+			getResponse = JSON.parse(req.responseText);
+			
+			populateMap(JSON.parse(getResponse.results), map);
 
-	function callback(rows){
-		populateMap(rows, map);
-	}
-	
-
-	// var rows = [
-	// 	{
-	// 	  id: 0,
-	// 	  latitude: 47.600227,
-	// 	  longitude: -122.310827,
-	// 	  city: 'Seattle',
-	// 	  state: 'Washington',
-	// 	  email: 'email@email.com'
-	// 	},
-	// 	{
-	// 	  id: 2,
-	// 	  latitude: 47.600227,
-	// 	  longitude: -122.310827,
-	// 	  city: 'Seattle',
-	// 	  state: 'Washington',
-	// 	  email: 'email@email.com'
-	// 	},
-	// 	{
-	// 	  id: 3,
-	// 	  latitude: 39.4398657,
-	// 	  longitude: -98.69859749999999,
-	// 	  city: 'Osborne',
-	// 	  state: 'Kansas',
-	// 	  email: 'email@email.com'
-	// 	}
-	//   ]
-
-	//   console.log(rows);
-
-	// populateMap(oregonStateMarker, map);
-	// populateMap(rows, map);
-
+		} else {
+			console.log("Error in network request: " + req.statusText);
+		}});
+	req.send(null);
 }
-
 
 /**
  * 
@@ -146,15 +93,16 @@ function initMap(rows) {
  * 		with event listener to each marker.
  * 
  * Parameters:	
- * 		a JSON object containing lat and lng data
+ * 		an object containing latitude and longitude data
  * 		a map object
  * 
  * Returns:	
  * 		nothing
  * 
  * Description:
- * 		Iterates through JSON object and creates a marker for each element 
- * 		using the lat and lng data.
+ * 		Iterates through object and creates a marker for each element 
+ * 		using the lat and lng data. Adds an event listener and infowindow
+ * 		for each marker. Organizes the data into clusters
  * 
  **/
 function populateMap(mapData, map){
@@ -196,7 +144,6 @@ function populateMap(mapData, map){
 			infowindow.open(marker.get('map'), marker);
 		}); 
 	}
-
 }
 
 
