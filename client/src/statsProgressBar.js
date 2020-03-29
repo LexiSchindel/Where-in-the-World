@@ -1,7 +1,7 @@
 /*******************************************************************************
  * 
  * File:	googleMaps.js
- * Author:	Team Divided by 0, Lexi Chasney
+ * Author:	Team Divided by 0
  * Date:	3/27/2020
  * 
  * Description: 
@@ -104,14 +104,13 @@ function initStateProgressBar(data){
         totalCount += parseInt(data[i].total);
     }
 
-    let row;
+	let row;
+	let row2;
     let caption;
     let progressDivider;
     let progress;
 	let progressBar;
 	
-
-
 	// ALTERNATE DISPLAY
     // Single bar for all states
     progress= document.createElement('div');
@@ -134,26 +133,24 @@ function initStateProgressBar(data){
     }
     div.appendChild(progress);
 
-
 	// Line break
     div.appendChild(document.createElement('br'));
-
-
 
     // One bar per state
     for (let i=0; i < data.length; i++)
     {
         row = document.createElement('div');
-        row.className = "row";
+		row.className = "row";
+		row2 = document.createElement('div');
+		row2.className = "row";
 
         caption = document.createElement('div');
-		// caption.className = "col-2 offset-sm-2";
-        caption.className = "col-xl-3";
+        caption.className = "col-xl-12";
         // caption.textContent = data[i].state + " (" + data[i].total + ")";
         caption.textContent = data[i].state;
 
         progressDivider = document.createElement('div');
-        progressDivider.className = 'col-xl-9';
+        progressDivider.className = 'col-xl-12';
 
         progress = document.createElement('div');
         progress.className = "progress";
@@ -172,12 +169,8 @@ function initStateProgressBar(data){
         progress.appendChild(progressBar);
         progressDivider.appendChild(progress);
         row.appendChild(caption);
-        row.appendChild(progressDivider);
-        div.appendChild(row);
+        row2.appendChild(progressDivider);
+		div.appendChild(row);
+		div.appendChild(row2);
     }
-
-
-    
-
-    
 }
