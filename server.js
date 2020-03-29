@@ -97,6 +97,25 @@ app.get ("/index", function(req, res){
     });
 });
 
+//get data middle route
+app.get ("/getdata", function(req, res){
+  let context = {};
+  let result = [];
+  pool.query("SELECT * FROM maps", (err, rows) =>
+  {
+    if(err){
+      console.log(err);
+      return;
+    }
+    result = rows.rows;
+    // console.log("rows: ", result);
+    context.results = JSON.stringify(result);
+    console.log("context: ", context);
+    // res.render("index", context);
+    res.send(context);
+  });
+});
+
 //about
 app.get ("/about", function(req, res){
   res.render("about");
@@ -178,8 +197,8 @@ app.post ("/", async (request, response) => {
               
               result = rows.rows;
               // console.log("rows: ", result);
-        
-              context.results = result;
+
+              context.results = JSON.stringify(result);
 
               response.send(context);
               
