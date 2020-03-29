@@ -18,14 +18,6 @@ app.set('view engine', 'handlebars');
 //database connection (local)
 const { Pool } = require('pg');
 
-//localhost connection for testing
-// const pool = new Pool({
-//   host: 'localhost',
-//   database: 'map',
-//   password: 'flyhomes',
-//   port: 5432,
-// });
-
 // heroku database connection
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -38,7 +30,15 @@ const pool = new Pool({
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-//index
+/*******************************************
+ * handle: for homepage load
+ * 
+ * parameters: none
+ * 
+ * returns: all current data in database and 
+ * renders homepage
+ ********************************************/
+
 app.get("/", function(req, res){
   let context = {};
   let result = [];
@@ -50,13 +50,21 @@ app.get("/", function(req, res){
       }
       
       result = rows.rows;
-      // console.log("rows: ", result);
 
       context.results = JSON.stringify(result);
       console.log("context: ", context);
       res.render("index", context);
     });
 });
+
+/*******************************************
+ * handle: for stats page
+ * 
+ * parameter: receives query parameter from client
+ * 
+ * returns: returns grouped data by city/state or
+ * by state depending on query parameter
+ ********************************************/
 
 app.get("/dataTable", function(req, res){
   let context = {};
@@ -97,7 +105,14 @@ app.get("/dataTable", function(req, res){
   }
 });
 
-//other index render
+/*******************************************
+ * handle: for index page
+ * 
+ * parameter: none
+ * 
+ * returns: returns all data in database
+ ********************************************/
+
 app.get ("/index", function(req, res){
   let context = {};
   let result = [];
@@ -109,7 +124,6 @@ app.get ("/index", function(req, res){
       }
       
       result = rows.rows;
-      // console.log("rows: ", result);
 
       context.results = JSON.stringify(result);
       console.log("context: ", context);
@@ -117,15 +131,39 @@ app.get ("/index", function(req, res){
     });
 });
 
-//about
+/*******************************************
+ * handle: for about page
+ * 
+ * parameter: none
+ * 
+ * returns: renders about page
+ ********************************************/
+
 app.get ("/about", function(req, res){
   res.render("about");
 });
 
-//stats
+/*******************************************
+ * handle: for stats page
+ * 
+ * parameter: none
+ * 
+ * returns: renders stats page
+ ********************************************/
 app.get ("/stats", function(req, res){
   res.render("stats");
 });
+
+/*******************************************
+ * handle: for post requests; takes data 
+ * from post and inserts into database
+ * 
+ * parameter: latitude, longitude, city, state,
+ * country, email
+ * 
+ * returns: all data currently in database,
+ * including recently input data
+ ********************************************/
 
 app.post ("/", async (request, response) => {
   const email = request.body.email;
@@ -179,7 +217,7 @@ app.post ("/", async (request, response) => {
 
       var context = {}; //for returning to post request
 
-      //insert into db
+      //inserts all data from post into database
       pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
         [latitude, longitude, city, state, email], function(err, result){
           if(err){
@@ -206,55 +244,8 @@ app.post ("/", async (request, response) => {
             });
           }
         });
-
-
     })
     .catch(e => {
       console.log("e ", e);
     });
-
 })
-
-
-
-function insertDB(latitude, longitude, city, state, email, callback){
-  pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
-    [latitude, longitude, city, state, email], function(err, result){
-    if(err){
-        console.log(err);
-        return;
-    }
-    else{
-      console.log("insert db");
-
-      function callback() { 
-        
-        let allDB = getAllDB();
-
-        return allDB; 
-      };
-
-      return callback();
-    }
-  });
-}
-
-function getAllDB(callback){
-  let result;
-
-  pool.query("SELECT * FROM maps", (err, rows) => {
-    if(err){
-        console.log(err);
-        return;
-    }
-
-    function callback() { 
-        
-      result = rows.rows;
-
-      return JSON.stringify(result);
-    };
-
-    return callback();
-  });
-}

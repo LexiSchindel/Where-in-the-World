@@ -1,11 +1,58 @@
+/*******************************************************************************
+ * 
+ * File:	googleMaps.js
+ * Author:	Team Divided by 0, Lexi Chasney
+ * Date:	3/27/2020
+ * 
+ * Description: 
+ * This file contains the code used the generate the stats page of the website. 
+ * It includes calls to the database to retrieve the most recent data and JS
+ * to populate the relevant tables with said data.
+ * 		
+ ******************************************************************************/
+
 document.addEventListener('DOMContentLoaded', initPage()); 
 
+/**
+ * 
+ * function initPage()
+ * 
+ * Summary: 
+ * 		Called upon DOM content loaded. Initializes cityTable and stateTable
+ * 
+ * Parameters:	
+ * 		none
+ * 
+ * Returns:	
+ * 		nothing
+ * 
+ * Description:
+ * 		Initializes the page with all tables
+ * 
+ **/
 function initPage(){
-    cityTable();
-    stateTable();
+    getData('/dataTable', 'city');
+    getData('/dataTable', 'state');
 }
 
-//get the data from url provided; return the parsed text
+/**
+ * 
+ * function getData()
+ * 
+ * Summary: 
+ * 		performs get request to retrieve data from database for tables
+ * 
+ * Parameters:	
+ * 		url (which handle) and the type of data we want (state or city)
+ * 
+ * Returns:	
+ * 		nothing
+ * 
+ * Description:
+ * 		Will get the data from the database and then call the 
+ *      proper nitTable function
+ * 
+ **/
 function getData(url, dataType){
     let req = new XMLHttpRequest();
     let getResponse;
@@ -31,15 +78,24 @@ function getData(url, dataType){
     req.send(null);
 }
 
-function cityTable(){
-    getData('/dataTable', 'city');
-}
-
-function stateTable(){
-    getData('/dataTable', 'state');
-}
-
-//creates a city table based on data provided
+/**
+ * 
+ * function initCityTable()
+ * 
+ * Summary: 
+ * 		Creates the city table rows
+ * 
+ * Parameters:	
+ * 		data from the database
+ * 
+ * Returns:	
+ * 		nothing
+ * 
+ * Description:
+ * 		Loops through the data results and creates the 
+ *      city table
+ * 
+ **/
 function initCityTable(data){
 
     console.log("data", JSON.parse(data.results));
@@ -65,7 +121,24 @@ function initCityTable(data){
     }
 }
 
-//creates a city table based on data provided
+/**
+ * 
+ * function initStateTable()
+ * 
+ * Summary: 
+ * 		Creates the state table rows
+ * 
+ * Parameters:	
+ * 		data from the database
+ * 
+ * Returns:	
+ * 		nothing
+ * 
+ * Description:
+ * 		Loops through the data results and creates the 
+ *      state table
+ * 
+ **/
 function initStateTable(data){
 
     console.log("data", JSON.parse(data.results));
