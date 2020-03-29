@@ -131,16 +131,6 @@ app.get ("/index", function(req, res){
     });
 });
 
-<<<<<<< HEAD
-/*******************************************
- * handle: for about page
- * 
- * parameter: none
- * 
- * returns: renders about page
- ********************************************/
-
-=======
 //get data middle route
 app.get ("/getdata", function(req, res){
   let context = {};
@@ -160,8 +150,13 @@ app.get ("/getdata", function(req, res){
   });
 });
 
-//about
->>>>>>> master
+/*******************************************
+ * handle: for about page
+ * 
+ * parameter: none
+ * 
+ * returns: renders about page
+ ********************************************/
 app.get ("/about", function(req, res){
   res.render("about");
 });
