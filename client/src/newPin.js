@@ -1,3 +1,23 @@
+/*******************************************************************************
+ * 
+ * File:	newPin.js
+ * Author:	Team Divided by 0
+ * Date:	3/28/2020
+ * 
+ * Description: 
+ * This function facilitates the addition of a new pin to the page via a post
+ * submission. The post response contains a flag to relay whether this was an
+ * insert or a update to the database. Based on the flag, a success message is
+ * displayed. 
+ * 
+ * There is built in validation to ensure the submission contains an
+ * oregon state email and has all necessary fields. 
+ * 
+ * Once the form is submitted, the success message is displayed, the modal closes,
+ * and the map re-initializes with the new data.
+ * 		
+ ******************************************************************************/
+
 //create these out of Post Submit function so we replace the current message each time we hit submit
 const formBody = document.getElementById('formModalBody'); //we will attach message to formBody
 const message = document.createElement('p'); //message for whether new insert or update
@@ -90,8 +110,6 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
             console.log("Error in network request: " + req.statusText);
         }
     });
-
-    
 
     req.send(JSON.stringify(payload));
     event.preventDefault();

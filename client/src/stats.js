@@ -1,7 +1,7 @@
 /*******************************************************************************
  * 
  * File:	googleMaps.js
- * Author:	Team Divided by 0, Lexi Chasney
+ * Author:	Team Divided by 0
  * Date:	3/27/2020
  * 
  * Description: 
