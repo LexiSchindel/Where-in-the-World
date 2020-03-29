@@ -18,17 +18,20 @@
       </ul>
     </div>
 </nav>
-<div>
-  <h3 class="newHeader float-left">Map of OSU Students</h3>
+<div class="newHeader">
+  <h3 class="float-left">Map of OSU Students</h3>
+  <button type="button" class="btn btn-primary float-right" id="modalButton" data-toggle="modal" data-target="#formModal">
+  Add Pin
+  </button>
 </div>
 
 <div id="map"></div>
 
 <!-- Button trigger modal -->
-<br>
+{{!-- <br>
 <button type="button" class="btn btn-primary" id="modalButton" data-toggle="modal" data-target="#formModal">
   Add Pin
-</button>
+</button> --}}
 
 <!-- Modal -->
 <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
