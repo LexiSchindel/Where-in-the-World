@@ -5,16 +5,47 @@ const modalCloseDelay = 2000; //close modal after 2 seconds after submission rec
 
 document.getElementById('postSubmit').addEventListener('click', function(event){
 
-    var req = new XMLHttpRequest();
-    var payload = {email: null, address: null};
-    var postResponse;
-    var url = '/';
+    let req = new XMLHttpRequest();
+    let payload = {email: null, address: null};
+    let postResponse;
+    const url = '/';
 
-    payload.email = document.getElementById('inputEmail4').value;
-    payload.address = document.getElementById('inputAddress').value;
-    payload.address += ' ' + document.getElementById('inputCity').value;
-    payload.address += ' ' + document.getElementById('inputState').value;
-    payload.address += ' ' + document.getElementById('inputZip').value;
+    let email = document.getElementById('inputEmail4').value;
+    let address = document.getElementById('inputAddress').value;
+    let city = document.getElementById('inputCity').value;
+    let state = document.getElementById('inputState').value;
+    let zip = document.getElementById('inputZip').value;
+
+    const constEmail = document.getElementById('inputEmail4').value;
+    const constAddress = document.getElementById('inputAddress').value;
+    const constCity = document.getElementById('inputCity').value;
+    const constState = document.getElementById('inputState').value;
+    const constZip = document.getElementById('inputZip').value;
+
+    // ugly validating.
+    let emailPatt = new RegExp("@oregonstate.edu");
+    if(!emailPatt.test(email.toString()) || email.toString() === ""){
+        return;
+    }
+    if(address.toString() === ""){
+        return;
+    }
+    if(city.toString() === ""){
+        return;
+    }
+    if(state.toString() === ""){
+        return;
+    }
+    if(zip.toString() === ""){
+        return;
+    }
+
+    payload.email = constEmail;
+    payload.address = constAddress;
+    payload.address += ' ' + constCity;
+    payload.address += ' ' + constState;
+    payload.address += ' ' + constZip;
+
     req.open('POST', url, true);
     req.setRequestHeader('Content-Type', 'application/json');
 
@@ -23,7 +54,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
             postResponse = JSON.parse(req.responseText);
             //does db already have email, then we updated
             let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
-            console.log("isUpdate: ", dbHasEmail[0].dbHasEmail)
+            console.log("isUpdate: ", dbHasEmail[0].dbHasEmail);
 
             //results back from db parsed
             postResponse = JSON.parse(postResponse.results);
@@ -52,7 +83,8 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
 
         } else {
             console.log("Error in network request: " + req.statusText);
-        }});
+        }
+    });
 
     
 
