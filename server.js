@@ -58,6 +58,25 @@ app.get("/", function(req, res){
     });
 });
 
+app.get("/data", function(req, res){
+  let context = {};
+  let result = [];
+  pool.query("SELECT city, count(id) as total FROM maps GROUP BY city ORDER BY total DESC", (err, rows) => 
+    {
+      if(err){
+          console.log(err);
+          return;
+      }
+      else{
+        result = rows.rows;
+        console.log("getdata ", result);
+
+        context.results = JSON.stringify(result);
+        res.send(context);
+      }
+    });
+});
+
 //other index render
 app.get ("/index", function(req, res){
   let context = {};
@@ -140,6 +159,7 @@ app.post ("/", async (request, response) => {
 
       var context = {}; //for returning to post request
 
+<<<<<<< HEAD
       //insert into db
       pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
         [latitude, longitude, city, state, email], function(err, result){
@@ -160,7 +180,7 @@ app.post ("/", async (request, response) => {
               result = rows.rows;
               // console.log("rows: ", result);
         
-              context.results = JSON.stringify(result);
+              context.results = result;
 
               response.send(context);
               
@@ -168,6 +188,9 @@ app.post ("/", async (request, response) => {
           }
         });
 
+=======
+      context.results = insertDB(latitude, longitude, city, state, email, callback);
+>>>>>>> 56fe0510ea0f0ee99d21a9994fd88107b37f5350
 
     })
     .catch(e => {
@@ -176,24 +199,46 @@ app.post ("/", async (request, response) => {
 
 })
 
-function insertDB(latitude, longitude, city, state, email){
-  
+
+
+function insertDB(latitude, longitude, city, state, email, callback){
+  pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
+    [latitude, longitude, city, state, email], function(err, result){
+    if(err){
+        console.log(err);
+        return;
+    }
+    else{
+      console.log("insert db");
+
+      function callback() { 
+        
+        let allDB = getAllDB();
+
+        return allDB; 
+      };
+
+      return callback();
+    }
+  });
 }
 
-function getAllDB(){
+function getAllDB(callback){
   let result;
-  return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM maps", (err, rows) => {
-      if(err){
-          console.log(err);
-          return;
-      }
-      
+
+  pool.query("SELECT * FROM maps", (err, rows) => {
+    if(err){
+        console.log(err);
+        return;
+    }
+
+    function callback() { 
+        
       result = rows.rows;
-      // console.log("rows: ", result);
 
       return JSON.stringify(result);
-      
-    });
+    };
+
+    return callback();
   });
 }
