@@ -65,7 +65,6 @@ app.get("/dataTable", function(req, res){
       }
       else{
         result = rows.rows;
-        console.log("getdata ", result);
 
         context.results = JSON.stringify(result);
         res.send(context);
@@ -81,7 +80,6 @@ app.get("/dataTable", function(req, res){
         }
         else{
           result = rows.rows;
-          console.log("getdata ", result);
 
           context.results = JSON.stringify(result);
           res.send(context);
@@ -115,7 +113,6 @@ app.get ("/getdata", function(req, res){
     result = rows.rows;
     // console.log("rows: ", result);
     context.results = JSON.stringify(result);
-    console.log("context: ", context);
     // res.render("index", context);
     res.send(context);
   });
@@ -226,7 +223,6 @@ app.post ("/", async (request, response) => {
                       return;
                   }
                   else{
-                    console.log("update db");
                     
                     //get updated data
                     pool.query("SELECT * FROM maps", (err, rows) => {
@@ -237,12 +233,9 @@ app.post ("/", async (request, response) => {
                       
                       result = rows.rows;
 
-                      console.log('already have email in db');
                       context.dbHasEmail = JSON.stringify([{'dbHasEmail':true}]);
 
                       context.results = JSON.stringify(result);
-
-                      console.log('update context: ', context);
 
                       response.send(context);
                       
