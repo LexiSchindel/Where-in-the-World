@@ -1,6 +1,7 @@
 //create these out of Post Submit function so we replace the current message each time we hit submit
 const formBody = document.getElementById('formModalBody'); //we will attach message to formBody
 const message = document.createElement('p'); //message for whether new insert or update
+const modalCloseDelay = 2000; //close modal after 2 seconds after submission received
 
 document.getElementById('postSubmit').addEventListener('click', function(event){
 
@@ -44,9 +45,16 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
                 formBody.appendChild(message); //append message to the formBody 
             }
 
+            //closes modal after 2 seconds following successful submission
+            setTimeout(function() {
+                $('#formModal').modal('toggle');
+            }, modalCloseDelay);
+
         } else {
             console.log("Error in network request: " + req.statusText);
         }});
+
+    
 
     req.send(JSON.stringify(payload));
     event.preventDefault();
