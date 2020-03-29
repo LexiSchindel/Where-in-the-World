@@ -191,113 +191,98 @@ app.post ("/", async (request, response) => {
       timeout: 1000 // milliseconds
     })
     .then(r => {
-      console.log("r.data ", r.data);
-      latitude = r.data.results[0].geometry.location.lat;
-      longitude = r.data.results[0].geometry.location.lng;
-      // loop through address_components to look for data of a specific type
-      for (let i = 0; i < r.data.results[0].address_components.length; i++) {
-        if (r.data.results[0].address_components[i].types[0] == "locality") {
-          city = r.data.results[0].address_components[i].long_name;
-        }
-        else if (r.data.results[0].address_components[i].types[0] == "administrative_area_level_1") {
-          state = r.data.results[0].address_components[i].long_name;
-        }
-        else if (r.data.results[0].address_components[i].types[0] == "country") {
-          country = r.data.results[0].address_components[i].long_name;
-        }
+
+      //if we didn't get any results back, send back no response flag
+      if (r.data.results.length === 0)
+      {
+        var context = {};
+        context.noResults = JSON.stringify([{'noResults':true}]);
+        response.send(context);
       }
 
-      console.log("latitude ", latitude, "longitude ", longitude);
-      console.log("city ", city, "state ", state, "country ", country);
-
-      var results = [];
-
-      results.push({"latitude": latitude,
-        "longitude": longitude,
-        "city": city,
-        "state": state,
-        "country": country});
-
-      var context = {}; //for returning to post request
-
-      //inserts all data from post into database
-      pool.query("SELECT email FROM maps WHERE lower(email) = lower($1)", 
-        [email], function(err, rows){
-          if(err){
-              console.log(err);
-              return;
+      //if we get a response, proceed with rest of handle
+      else{
+        latitude = r.data.results[0].geometry.location.lat;
+        longitude = r.data.results[0].geometry.location.lng;
+        // loop through address_components to look for data of a specific type
+        for (let i = 0; i < r.data.results[0].address_components.length; i++) {
+          if (r.data.results[0].address_components[i].types[0] == "locality") {
+            city = r.data.results[0].address_components[i].long_name;
           }
-          else{
-            console.log('check email data: ', rows.rows);
+          else if (r.data.results[0].address_components[i].types[0] == "administrative_area_level_1") {
+            state = r.data.results[0].address_components[i].long_name;
+          }
+          else if (r.data.results[0].address_components[i].types[0] == "country") {
+            country = r.data.results[0].address_components[i].long_name;
+          }
+        }
 
-            //subquery if we already have email
-            //update email, then send back new db contents
-            if (rows.rows.length > 0){
+        console.log("latitude ", latitude, "longitude ", longitude);
+        console.log("city ", city, "state ", state, "country ", country);
 
-              //inserts all data from post into database
-              pool.query("UPDATE maps SET latitude = $1, longitude = $2, city = $3, state = $4 WHERE email = $5", 
-                [latitude, longitude, city, state, email], function(err, result){
-                  if(err){
-                      console.log(err);
-                      return;
-                  }
-                  else{
-                    
-                    //get updated data
-                    pool.query("SELECT * FROM maps", (err, rows) => {
-                      if(err){
-                          console.log(err);
-                          return;
-                      }
-                      
-                      result = rows.rows;
+        var results = [];
 
-                      context.dbHasEmail = JSON.stringify([{'dbHasEmail':true}]);
+        results.push({"latitude": latitude,
+          "longitude": longitude,
+          "city": city,
+          "state": state,
+          "country": country});
 
-                      context.results = JSON.stringify(result);
+        var context = {}; //for returning to post request
 
-                      response.send(context);
-                      
-                    });
-                  }
-                });
+        //inserts all data from post into database
+        pool.query("SELECT email FROM maps WHERE lower(email) = lower($1)", 
+          [email], function(err, rows){
+            if(err){
+                console.log(err);
+                return;
             }
-
-            //otherwise we don't have email so perform insert
             else{
+              console.log('check email data: ', rows.rows);
 
-              //inserts all data from post into database
-              pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
-                [latitude, longitude, city, state, email], function(err, result){
-                  if(err){
-                      console.log(err);
-                      return;
-                  }
-                  else{
-                    console.log("insert db");
-                    
-                    //get updated data
-                    pool.query("SELECT * FROM maps", (err, rows) => {
-                      if(err){
-                          console.log(err);
-                          return;
-                      }
-                      
-                      result = rows.rows;
+              //subquery if we already have email
+              //update email, then send back new db contents
+              if (rows.rows.length > 0){
 
-                      context.dbHasEmail = JSON.stringify([{'dbHasEmail':false}]);
-                      context.results = JSON.stringify(result);
+                //inserts all data from post into database
+                pool.query("UPDATE maps SET latitude = $1, longitude = $2, city = $3, state = $4 WHERE email = $5", 
+                  [latitude, longitude, city, state, email], function(err, result){
+                    if(err){
+                        console.log(err);
+                        return;
+                    }
+                    else{
+                      context.dbHasEmail = JSON.stringify([{'dbHasEmail':true}]);
+                      context.noResults = JSON.stringify([{'noResults':false}]);
 
                       response.send(context);
-                      
-                    });
-                  }
-                });
+                    }
+                  });
+              }
+
+              //otherwise we don't have email so perform insert
+              else{
+                //inserts all data from post into database
+                pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
+                  [latitude, longitude, city, state, email], function(err, result){
+                    if(err){
+                        console.log(err);
+                        return;
+                    }
+                    else{
+                        context.dbHasEmail = JSON.stringify([{'dbHasEmail':false}]);
+                        context.noResults = JSON.stringify([{'noResults':false}]);
+
+                        response.send(context);
+                    }
+                  });
+              }
             }
-          }
-      });
+          });
+      }
     })
     .catch(e => {
       console.log("e ", e);
     });
+    
 })

@@ -19,10 +19,10 @@
  ******************************************************************************/
 
 //create these out of Post Submit function so we replace the current message each time we hit submit
-const formBody = document.getElementById('formModalBody'); //we will attach message to formBody
 const message = document.createElement('p'); //message for whether new insert or update
 message.className = 'postSuccessMessage';
 const modalCloseDelay = 500; //close modal after 0.5 seconds after submission received
+const map = document.getElementById('submitDiv');
 
 document.getElementById('postSubmit').addEventListener('click', function(event){
 
@@ -43,7 +43,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     const constState = document.getElementById('inputState').value;
     const constZip = document.getElementById('inputZip').value;
 
-    // ugly validating.
+    //validation
     let emailPatt = new RegExp("@oregonstate.edu");
     if(email.toString() === ""){
         return;
@@ -78,30 +78,37 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     req.addEventListener('load',function(){
         if(req.status >= 200 && req.status < 400){
             postResponse = JSON.parse(req.responseText);
-            //does db already have email, then we updated
-            let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
-            // console.log("isUpdate: ", dbHasEmail[0].dbHasEmail);
 
-            //results back from db parsed
-            postResponse = JSON.parse(postResponse.results);
+            let noLocationFound = JSON.parse(postResponse.noResults);
 
-            if (dbHasEmail[0].dbHasEmail == true)
+            //if we couldn't find the location, print fail message
+            if (noLocationFound[0].noResults === true)
             {
-                // console.log('post update');
-                initMap(postResponse);
                 message.textContent = "";
-                message.textContent = "We updated the address associated with " + email + ".";
-                const map = document.getElementById('submitDiv');
+                let inputAddress = address + " " + city + ", " + state + " " + zip;
+                message.textContent = "We could not find the a valid address using " + inputAddress + ".";
                 map.appendChild(message); //append message to the map
             }
-            else
-            {
-                // console.log('post new insert map');
-                initMap(postResponse);
-                message.textContent = "";
-                message.textContent = "Welcome " + email + " to the OSU World family!";
-                const map = document.getElementById('submitDiv');
-                map.appendChild(message); //append message to the map
+            else {
+                //does db already have email, then we updated
+                let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
+
+                if (dbHasEmail[0].dbHasEmail == true)
+                {
+                    // initMap(postResponse);
+                    message.textContent = "";
+                    message.textContent = "We updated the address associated with " + email + ".";
+                    initMap();
+                    map.appendChild(message); //append message to the map
+                }
+                else
+                {
+                    // initMap(postResponse);
+                    message.textContent = "";
+                    message.textContent = "Welcome " + email + " to the OSU World family!";
+                    initMap();
+                    map.appendChild(message); //append message to the map
+                }
             }
 
             //closes modal after 2 seconds following successful submission
@@ -112,6 +119,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
         } else {
             console.log("Error in network request: " + req.statusText);
         }
+        
     });
 
     req.send(JSON.stringify(payload));
