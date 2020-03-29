@@ -42,10 +42,8 @@ function initMap(rows) {
 				lat: parseFloat(centerOfUSA.lat),
 				lng: parseFloat(centerOfUSA.lng)
 			},
-			mapTypeControl: true,
-			mapTypeControlOptions: {
-				style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-			  }
+			disableDefaultUI: true,
+			zoomControl: true
 		});
 
 	// Create OSU marker and populate the map
