@@ -36,7 +36,17 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     req.addEventListener('load',function(){
         if(req.status >= 200 && req.status < 400){
             postResponse = JSON.parse(req.responseText);
-            initMap(JSON.parse(postResponse.results));
+            if (postResponse.hasEmail == true)
+            {
+                console.log('post response: ', postResponse);
+                //do some sort of error
+            }
+            else
+            {
+                console.log('post init map');
+                initMap(JSON.parse(postResponse.results));
+            }
+
         } else {
             console.log("Error in network request: " + req.statusText);
         }});
