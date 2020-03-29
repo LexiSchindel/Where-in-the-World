@@ -22,6 +22,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     // console.log(JSON.stringify(payload));
     req.send(JSON.stringify(payload));
     event.preventDefault();
+    
 });
 
 // document.getElementById('postSubmit').addEventListener('click', function(event){
