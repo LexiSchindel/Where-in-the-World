@@ -70,7 +70,7 @@ function getData(url, dataType){
             }
             else if (dataType === 'state'){
                 initStateTable(getResponse);
-                initStateProgressBar(getResponse);
+                // initStateProgressBar(getResponse);
             }
 
         } else {
@@ -166,85 +166,87 @@ function initStateTable(data){
 }
 
 
-function initStateProgressBar(data){
+
+
+// function initStateProgressBar(data){
     
-    data = JSON.parse(data.results);
-    const div = document.getElementById('progressDiv');
+//     data = JSON.parse(data.results);
+//     const div = document.getElementById('progressDiv');
 
-    let colors = ["bg-primary","bg-secondary","bg-success","bg-danger","bg-warning","bg-info","bg-dark"];
-    let colorsCount = 7;
+//     let colors = ["bg-primary","bg-secondary","bg-success","bg-danger","bg-warning","bg-info","bg-dark"];
+//     let colorsCount = 7;
 
-    // Total entries
-    let totalCount = 0;
-    for (let i=0; i < data.length; i++)
-    {
-        totalCount += parseInt(data[i].total);
-    }
+//     // Total entries
+//     let totalCount = 0;
+//     for (let i=0; i < data.length; i++)
+//     {
+//         totalCount += parseInt(data[i].total);
+//     }
 
-    let row;
-    let caption;
-    let progressDivider;
-    let progress;
-    let progressBar;
+//     let row;
+//     let caption;
+//     let progressDivider;
+//     let progress;
+//     let progressBar;
 
-    // One bar per state
-    for (let i=0; i < data.length; i++)
-    {
-        row = document.createElement('div');
-        row.className = "row";
+//     // One bar per state
+//     for (let i=0; i < data.length; i++)
+//     {
+//         row = document.createElement('div');
+//         row.className = "row";
 
-        caption = document.createElement('div');
-        caption.className = "col-2 offset-sm-2";
-        caption.textContent = data[i].state;
+//         caption = document.createElement('div');
+//         caption.className = "col-2 offset-sm-2";
+//         caption.textContent = data[i].state;
 
-        progressDivider = document.createElement('div');
-        progressDivider.className = 'col-sm-6';
+//         progressDivider = document.createElement('div');
+//         progressDivider.className = 'col-sm-6';
 
-        progress = document.createElement('div');
-        progress.className = "progress";
+//         progress = document.createElement('div');
+//         progress.className = "progress";
 
-        progressBar = document.createElement('div');
-        // progressBar.className = "progress-bar ";
-        progressBar.setAttribute("class", "progress-bar " + colors[i%colorsCount]);
-        progressBar.setAttribute("role", "progressbar");
-        progressBar.setAttribute("style", "width:"+ data[i].total / totalCount * 100 +"%");
-        progressBar.setAttribute("aria-valuenow", data[i].total / totalCount * 100);
-        progressBar.setAttribute("aria-valuemin", 0);
-        progressBar.setAttribute("aria-valuemax", 100);
-        // progressBar.textContent = data[i].state;
-        progressBar.textContent = parseInt(data[i].total / totalCount * 100) +"%";
+//         progressBar = document.createElement('div');
+//         // progressBar.className = "progress-bar ";
+//         progressBar.setAttribute("class", "progress-bar " + colors[i%colorsCount]);
+//         progressBar.setAttribute("role", "progressbar");
+//         progressBar.setAttribute("style", "width:"+ data[i].total / totalCount * 100 +"%");
+//         progressBar.setAttribute("aria-valuenow", data[i].total / totalCount * 100);
+//         progressBar.setAttribute("aria-valuemin", 0);
+//         progressBar.setAttribute("aria-valuemax", 100);
+//         // progressBar.textContent = data[i].state;
+//         progressBar.textContent = parseInt(data[i].total / totalCount * 100) +"%";
 
-        progress.appendChild(progressBar);
-        progressDivider.appendChild(progress);
-        row.appendChild(caption);
-        row.appendChild(progressDivider);
-        div.appendChild(row);
-    }
-
-
-    // Line break
-    div.appendChild(document.createElement('br'));
+//         progress.appendChild(progressBar);
+//         progressDivider.appendChild(progress);
+//         row.appendChild(caption);
+//         row.appendChild(progressDivider);
+//         div.appendChild(row);
+//     }
 
 
-    // ALTERNATE DISPLAY
-    // Single bar for all states
-    progress= document.createElement('div');
-    progress.className = "progress";
+//     // Line break
+//     div.appendChild(document.createElement('br'));
 
-    for (let i=0; i < data.length; i++)
-    {
-        progressBar = document.createElement('div');
-        // progressBar.className = "progress-bar";
-        progressBar.setAttribute("class", "progress-bar " + colors[i%colorsCount]);
-        progressBar.setAttribute("role", "progressbar");
-        progressBar.setAttribute("style", "width:"+ data[i].total / totalCount * 100 +"%");
-        progressBar.setAttribute("aria-valuenow", data[i].total / totalCount * 100);
-        progressBar.setAttribute("aria-valuemin", 0);
-        progressBar.setAttribute("aria-valuemax", 100);
-        progressBar.textContent = data[i].state;
-        // progressBar.textContent = parseInt(data[i].total / totalCount * 100) +"%";
 
-        progress.appendChild(progressBar);
-    }
-    div.appendChild(progress);
-}
+//     // ALTERNATE DISPLAY
+//     // Single bar for all states
+//     progress= document.createElement('div');
+//     progress.className = "progress";
+
+//     for (let i=0; i < data.length; i++)
+//     {
+//         progressBar = document.createElement('div');
+//         // progressBar.className = "progress-bar";
+//         progressBar.setAttribute("class", "progress-bar " + colors[i%colorsCount]);
+//         progressBar.setAttribute("role", "progressbar");
+//         progressBar.setAttribute("style", "width:"+ data[i].total / totalCount * 100 +"%");
+//         progressBar.setAttribute("aria-valuenow", data[i].total / totalCount * 100);
+//         progressBar.setAttribute("aria-valuemin", 0);
+//         progressBar.setAttribute("aria-valuemax", 100);
+//         progressBar.textContent = data[i].state;
+//         // progressBar.textContent = parseInt(data[i].total / totalCount * 100) +"%";
+
+//         progress.appendChild(progressBar);
+//     }
+//     div.appendChild(progress);
+// }

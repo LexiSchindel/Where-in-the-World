@@ -5,6 +5,13 @@
 	margin-right: auto;
 }
 
+#progressDiv {
+	width: 90%;
+	/* height: 400px; */
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .formDiv{
     margin: 5% 15%;
 }
