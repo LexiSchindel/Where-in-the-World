@@ -1,4 +1,22 @@
-var express = require('express');
+/*******************************************************************************
+ * 
+ * File:	server.js
+ * Author:	Team Divided by 0
+ * Date:	3/27/2020
+ * 
+ * Description: 
+ * Herein are all the server functions to connect the client with the database.
+ * We used a Postgres database hosted on Heroku. We used handlebars to render
+ * our pages and several handles to query the database and receive up-to-date
+ * information for graphs, tables, and maps. 
+ * 
+ * In our post request, we query the google geo services API to receive the 
+ * corresponding latitude and longitude for the provided address. We store that
+ * information, along with city, state, and email, in our database.
+ * 		
+ ******************************************************************************/
+
+ var express = require('express');
 const Client = require("@googlemaps/google-maps-services-js").Client;
 var app = express();
 var bodyParser = require('body-parser');
@@ -142,13 +160,14 @@ app.get ("/stats", function(req, res){
 
 /*******************************************
  * handle: for post requests; takes data 
- * from post and inserts into database
+ * from post and inserts into database or
+ * updates existing database entry
  * 
  * parameter: latitude, longitude, city, state,
  * country, email
  * 
  * returns: all data currently in database,
- * including recently input data
+ * including recently input/updated data
  ********************************************/
 
 app.post ("/", async (request, response) => {
