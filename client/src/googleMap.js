@@ -11,6 +11,7 @@
  ******************************************************************************/
 
 
+
 /**
  * 
  * function initMap()
@@ -68,6 +69,39 @@ function initMap(rows) {
 		}
 	]
 
+	populateMap(oregonStateMarker, map);
+
+
+	function getData(url){
+		let req = new XMLHttpRequest();
+		let getResponse;
+	
+		req.open('GET', url, true);
+		req.setRequestHeader('Content-Type', 'application/json');
+		req.addEventListener('load',function(){
+			if(req.status >= 200 && req.status < 400){
+				// console.log("response from server: " + req.responseText);
+				getResponse = JSON.parse(req.responseText);
+				console.log("response: ", getResponse);
+	
+				// populateMap(JSON.parse(getResponse.results), map);
+				
+				callback(JSON.parse(getResponse.results));
+				// return JSON.parse(getResponse.results);
+			} else {
+				console.log("Error in network request: " + req.statusText);
+			}});
+		req.send(null);
+	}
+
+	// var rows = getData("/getdata");
+	getData("/getData");
+
+	function callback(rows){
+		populateMap(rows, map);
+	}
+	
+
 	// var rows = [
 	// 	{
 	// 	  id: 0,
@@ -97,8 +131,8 @@ function initMap(rows) {
 
 	//   console.log(rows);
 
-	populateMap(oregonStateMarker, map);
-	populateMap(rows, map);
+	// populateMap(oregonStateMarker, map);
+	// populateMap(rows, map);
 
 }
 
@@ -157,5 +191,7 @@ function populateMap(mapData, map){
 	}
 	
 }
+
+
 
 
