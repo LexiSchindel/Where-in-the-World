@@ -161,6 +161,8 @@ function populateMap(mapData, map){
 
 	var infoWindow = new google.maps.InfoWindow();
 
+	var markers = [];
+
 	for (var i=0; i < mapData.length; i++)
 	{
 		var marker = new google.maps.Marker({
@@ -173,9 +175,14 @@ function populateMap(mapData, map){
 			icon: mapData[i].icon
 		});
 
+		markers.push(marker);
 		attachInfoWindow(marker, mapData[i].email);
 	}
-	
+
+	// Add a marker clusterer to manage the markers.
+	var markerCluster = new MarkerClusterer(map, markers,
+		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
 	function attachInfoWindow(marker, email) {
 		var infowindow = new google.maps.InfoWindow({
 			content: email,
@@ -189,7 +196,7 @@ function populateMap(mapData, map){
 			infowindow.open(marker.get('map'), marker);
 		}); 
 	}
-	
+
 }
 
 
