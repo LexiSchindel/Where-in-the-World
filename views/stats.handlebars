@@ -19,17 +19,23 @@
     </div>
 </nav>
 
-<table class="cityTable" onload="cityTable()">
+<div>
+    <p class="newP">See, you're not alone! There are OSU students across the country. 
+        Add your marker to the map too so even more students can see they have peers nearby!</p>
+</div>
+
+<div class="statsTable">
+  <table class="table table-bordered table-hover" id ="cityTable" onload="cityTable()">
     <thead class="thead-dark">
-        <tr>
-            <th scope="col">City</th>
-            <th scope="col">Total</th>
-        </tr>
+      <tr>
+          <th scope="col">City</th>
+          <th scope="col">Total</th>
+      </tr>
     </thead>
     <tbody id="tbody">
     </tbody>
-    </table>
-
+  </table>
+</div>
 
 <script src="./src/script.js"></script>
 <script src="./src/stats.js"></script>
