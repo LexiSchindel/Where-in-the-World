@@ -1,5 +1,26 @@
 
 
+
+// document.addEventListener('DOMContentLoaded', renderPage());
+// function renderPage(){
+//     var req = new XMLHttpRequest();
+//     var url = '/';
+//     req.open('GET', url, true);
+//     req.setRequestHeader('Content-Type', 'applicatoin/x-www-form-urlencoded');
+//     req.addEventListener('load', function()
+//     {
+//         if(req.status>=200 && req.status<400){
+//             getResponse = JSON.parse(req.responseText);
+//             console.log(getResponse);
+//             // initMap(getResponse.results);
+//         }
+//         else{
+//             console.log("Error in network request: " + req.statusText);
+//         }
+//     });
+//     req.send(null);
+// }
+
 document.getElementById('postSubmit').addEventListener('click', function(event){
     var req = new XMLHttpRequest();
     var payload = {email: null, address: null};
@@ -15,7 +36,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     req.addEventListener('load',function(){
         if(req.status >= 200 && req.status < 400){
             postResponse = JSON.parse(req.responseText);
-            initMap(postResponse.results);
+            initMap(JSON.parse(postResponse.results));
         } else {
             console.log("Error in network request: " + req.statusText);
         }});
