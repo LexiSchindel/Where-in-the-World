@@ -54,6 +54,11 @@
     margin: 5% 15%;
 }
 
+.submission{
+	margin: 2% 5%;
+	font-style: italic;
+}
+
 .statsTableLeft{
 	margin-left: 3%;
 	width: 45%;

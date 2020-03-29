@@ -22,7 +22,7 @@
 const formBody = document.getElementById('formModalBody'); //we will attach message to formBody
 const message = document.createElement('p'); //message for whether new insert or update
 message.className = 'postSuccessMessage';
-const modalCloseDelay = 2000; //close modal after 2 seconds after submission received
+const modalCloseDelay = 500; //close modal after 0.5 seconds after submission received
 
 document.getElementById('postSubmit').addEventListener('click', function(event){
 
@@ -90,16 +90,18 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
                 // console.log('post update');
                 initMap(postResponse);
                 message.textContent = "";
-                message.textContent = "We updated the address associated with your email!";
-                formBody.appendChild(message); //append message to the formBody 
+                message.textContent = "We updated the address associated with " + email + ".";
+                const map = document.getElementById('submitDiv');
+                map.appendChild(message); //append message to the map
             }
             else
             {
                 // console.log('post new insert map');
                 initMap(postResponse);
                 message.textContent = "";
-                message.textContent = "Welcome to the OSU World family!";
-                formBody.appendChild(message); //append message to the formBody 
+                message.textContent = "Welcome " + email + " to the OSU World family!";
+                const map = document.getElementById('submitDiv');
+                map.appendChild(message); //append message to the map
             }
 
             //closes modal after 2 seconds following successful submission
