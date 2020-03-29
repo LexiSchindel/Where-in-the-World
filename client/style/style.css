@@ -35,6 +35,11 @@
 	margin-right: auto;
 }
 
+.postSuccessMessage{
+	font-size: 18px;
+	text-align: center;
+}
+
 .formDiv{
     margin: 5% 15%;
 }

@@ -21,6 +21,7 @@
 //create these out of Post Submit function so we replace the current message each time we hit submit
 const formBody = document.getElementById('formModalBody'); //we will attach message to formBody
 const message = document.createElement('p'); //message for whether new insert or update
+message.className = 'postSuccessMessage';
 const modalCloseDelay = 2000; //close modal after 2 seconds after submission received
 
 document.getElementById('postSubmit').addEventListener('click', function(event){
@@ -89,7 +90,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
                 console.log('post update');
                 initMap(postResponse);
                 message.textContent = "";
-                message.textContent = "We updated your address associated with your email!";
+                message.textContent = "We updated the address associated with your email!";
                 formBody.appendChild(message); //append message to the formBody 
             }
             else
