@@ -35,6 +35,16 @@
 	margin-right: auto;
 }
 
+#postSubmit{
+	background-color: rgba(255,76,11,0.87) !important; 
+	border-color: rgba(255,76,11,0.87) !important;
+}
+
+#postSubmit:hover{
+	background-color: black !important; 
+	border-color: black !important;
+}
+
 .postSuccessMessage{
 	font-size: 18px;
 	text-align: center;
