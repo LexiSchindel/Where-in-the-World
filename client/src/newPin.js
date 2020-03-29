@@ -80,14 +80,14 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
             postResponse = JSON.parse(req.responseText);
             //does db already have email, then we updated
             let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
-            console.log("isUpdate: ", dbHasEmail[0].dbHasEmail);
+            // console.log("isUpdate: ", dbHasEmail[0].dbHasEmail);
 
             //results back from db parsed
             postResponse = JSON.parse(postResponse.results);
 
             if (dbHasEmail[0].dbHasEmail == true)
             {
-                console.log('post update');
+                // console.log('post update');
                 initMap(postResponse);
                 message.textContent = "";
                 message.textContent = "We updated the address associated with your email!";
@@ -95,7 +95,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
             }
             else
             {
-                console.log('post new insert map');
+                // console.log('post new insert map');
                 initMap(postResponse);
                 message.textContent = "";
                 message.textContent = "Welcome to the OSU World family!";

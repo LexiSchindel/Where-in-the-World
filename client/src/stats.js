@@ -62,7 +62,7 @@ function getData(url, dataType){
     req.addEventListener('load',function(){
         if(req.status >= 200 && req.status < 400){
             getResponse = JSON.parse(req.responseText);
-            console.log("response: ", getResponse);
+            // console.log("response: ", getResponse);
 
             //use data to init proper table
             if (dataType === 'city'){
@@ -99,7 +99,7 @@ function getData(url, dataType){
  **/
 function initCityTable(data){
 
-    console.log("data", JSON.parse(data.results));
+    // console.log("data", JSON.parse(data.results));
     data = JSON.parse(data.results);
     const tBody = document.getElementById('cityBody');
 
@@ -142,7 +142,7 @@ function initCityTable(data){
  **/
 function initStateTable(data){
 
-    console.log("data", JSON.parse(data.results));
+    // console.log("data", JSON.parse(data.results));
     data = JSON.parse(data.results);
     const tBody = document.getElementById('stateBody');
 
