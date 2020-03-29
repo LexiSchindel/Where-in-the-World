@@ -213,12 +213,44 @@ app.post ("/", async (request, response) => {
           }
           else{
             console.log('check email data: ', rows.rows);
+
+            //subquery if we already have email
+            //update email, then send back new db contents
             if (rows.rows.length > 0){
-              console.log('already have email in db');
-              context.results = JSON.stringify([{'hasEmail':true}]);
-              response.send(context);
-              return;
+
+              //inserts all data from post into database
+              pool.query("UPDATE maps SET latitude = $1, longitude = $2, city = $3, state = $4 WHERE email = $5", 
+                [latitude, longitude, city, state, email], function(err, result){
+                  if(err){
+                      console.log(err);
+                      return;
+                  }
+                  else{
+                    console.log("update db");
+                    
+                    //get updated data
+                    pool.query("SELECT * FROM maps", (err, rows) => {
+                      if(err){
+                          console.log(err);
+                          return;
+                      }
+                      
+                      result = rows.rows;
+
+                      console.log('already have email in db');
+                      context.dbHasEmail = JSON.stringify([{'dbHasEmail':true}]);
+
+                      context.results = JSON.stringify(result);
+
+                      console.log('update context: ', context);
+
+                      response.send(context);
+                      
+                    });
+                  }
+                });
             }
+
             //otherwise we don't have email so perform insert
             else{
 
@@ -241,6 +273,7 @@ app.post ("/", async (request, response) => {
                       
                       result = rows.rows;
 
+                      context.dbHasEmail = JSON.stringify([{'dbHasEmail':false}]);
                       context.results = JSON.stringify(result);
 
                       response.send(context);

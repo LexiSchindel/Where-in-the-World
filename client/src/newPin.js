@@ -1,3 +1,7 @@
+//create these out of Post Submit function so we replace the current message each time we hit submit
+const formBody = document.getElementById('formModalBody'); //we will attach message to formBody
+const message = document.createElement('p'); //message for whether new insert or update
+
 document.getElementById('postSubmit').addEventListener('click', function(event){
 
     var req = new XMLHttpRequest();
@@ -16,15 +20,28 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     req.addEventListener('load',function(){
         if(req.status >= 200 && req.status < 400){
             postResponse = JSON.parse(req.responseText);
-            if (postResponse.hasEmail == true)
+            //does db already have email, then we updated
+            let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
+            console.log("isUpdate: ", dbHasEmail[0].dbHasEmail)
+
+            //results back from db parsed
+            postResponse = JSON.parse(postResponse.results);
+
+            if (dbHasEmail[0].dbHasEmail == true)
             {
-                console.log('post response: ', postResponse);
-                //do some sort of error
+                console.log('post update');
+                initMap(postResponse);
+                message.textContent = "";
+                message.textContent = "We updated your address associated with your email!";
+                formBody.appendChild(message); //append message to the formBody 
             }
             else
             {
-                console.log('post init map');
-                initMap(JSON.parse(postResponse.results));
+                console.log('post new insert map');
+                initMap(postResponse);
+                message.textContent = "";
+                message.textContent = "Welcome to the OSU World family!";
+                formBody.appendChild(message); //append message to the formBody 
             }
 
         } else {
