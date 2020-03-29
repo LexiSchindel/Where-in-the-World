@@ -39,8 +39,16 @@
     margin: 5% 15%;
 }
 
-.statsTables{
-	margin: 5% 20%;
+.statsTableLeft{
+	margin-left: 3%;
+	width: 45%;
+	float: left;
+}
+
+.statsTableRight{
+	margin-right: 3%;
+	width: 45%;
+	float: right;
 }
 
 .newP{

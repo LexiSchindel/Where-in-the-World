@@ -21,32 +21,33 @@
 
 <div>
     <h3 class="newHeader text-center">OSU Student Statistics</h3>
-    <p class="newP">See, you're not alone! There are OSU students across the country. 
-      Add your marker to the map too so even more students can see they have peers nearby!</p>
+    <p class="newP">See, you're not alone! There are OSU students across the country.
+        Add your marker to the map too so even more students can see they have peers nearby!</p>
 </div>
 
-<div class="statsTables">
-  <table class="table table-bordered table-hover" id ="cityTable" onload="cityTable()">
-    <thead class="thead-dark">
-      <tr>
-          <th scope="col">City</th>
-          <th scope="col">Total</th>
-      </tr>
-    </thead>
-    <tbody id="cityBody">
-    </tbody>
-  </table>
-
-  <table class="table table-bordered table-hover" id ="stateTable" onload="stateTable()">
-    <thead class="thead-dark">
-      <tr>
-          <th scope="col">State</th>
-          <th scope="col">Total</th>
-      </tr>
-    </thead>
-    <tbody id="stateBody">
-    </tbody>
-  </table>
+<div class="statsTableLeft">
+    <table class="table table-bordered table-hover" id ="cityTable" onload="cityTable()">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">City</th>
+            <th scope="col">Total</th>
+        </tr>
+        </thead>
+        <tbody id="cityBody">
+        </tbody>
+    </table>
+</div>
+<div class="statsTableRight">
+    <table class="table table-bordered table-hover" id ="stateTable" onload="stateTable()">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">State</th>
+            <th scope="col">Total</th>
+        </tr>
+        </thead>
+        <tbody id="stateBody">
+        </tbody>
+    </table>
 </div>
 
 
