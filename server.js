@@ -191,7 +191,6 @@ app.post ("/", async (request, response) => {
       timeout: 1000 // milliseconds
     })
     .then(r => {
-      console.log("r.data ", r.data);
 
       //if we didn't get any results back, send back no response flag
       if (r.data.results.length === 0)
@@ -253,31 +252,16 @@ app.post ("/", async (request, response) => {
                         return;
                     }
                     else{
-                      
-                      //get updated data
-                      pool.query("SELECT * FROM maps", (err, rows) => {
-                        if(err){
-                            console.log(err);
-                            return;
-                        }
-                        
-                        result = rows.rows;
+                      context.dbHasEmail = JSON.stringify([{'dbHasEmail':true}]);
+                      context.noResults = JSON.stringify([{'noResults':false}]);
 
-                        context.dbHasEmail = JSON.stringify([{'dbHasEmail':true}]);
-                        context.noResults = JSON.stringify([{'noResults':false}]);
-
-                        context.results = JSON.stringify(result);
-
-                        response.send(context);
-                        
-                      });
+                      response.send(context);
                     }
                   });
               }
 
               //otherwise we don't have email so perform insert
               else{
-
                 //inserts all data from post into database
                 pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
                   [latitude, longitude, city, state, email], function(err, result){
@@ -286,24 +270,10 @@ app.post ("/", async (request, response) => {
                         return;
                     }
                     else{
-                      console.log("insert db");
-                      
-                      //get updated data
-                      pool.query("SELECT * FROM maps", (err, rows) => {
-                        if(err){
-                            console.log(err);
-                            return;
-                        }
-                        
-                        result = rows.rows;
-
                         context.dbHasEmail = JSON.stringify([{'dbHasEmail':false}]);
                         context.noResults = JSON.stringify([{'noResults':false}]);
-                        context.results = JSON.stringify(result);
 
                         response.send(context);
-                        
-                      });
                     }
                   });
               }
