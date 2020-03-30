@@ -66,7 +66,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
         return;
     }
     if(isNaN(zip) || zip.length != 5){
-        alert("Please enter a valid zip code.");
+        alert("Please enter a 5 digit zip code.");
         event.preventDefault();
         return;
     }
