@@ -65,6 +65,11 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
     if(zip.toString() === ""){
         return;
     }
+    if(isNaN(zip) || zip.length != 5){
+        alert("Please enter a valid zip code.");
+        event.preventDefault();
+        return;
+    }
 
     payload.email = constEmail;
     payload.address = constAddress;
