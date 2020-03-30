@@ -73,7 +73,8 @@ function initMap() {
 		if(req.status >= 200 && req.status < 400){
 			
 			getResponse = JSON.parse(req.responseText);
-			
+
+			updateStateProgressBar();
 			populateMap(JSON.parse(getResponse.results), map);
 
 		} else {
