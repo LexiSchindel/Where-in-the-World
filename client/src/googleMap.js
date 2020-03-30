@@ -12,13 +12,13 @@
 
 /**
  * 
- * function initMap(rows)
+ * function initMap()
  * 
  * Summary: 
  * 		Initializes the map
  * 
  * Parameters:	
- * 		Object containing rows of location data
+ * 		none
  * 
  * Returns:	
  * 		nothing
@@ -28,7 +28,7 @@
  * 		the map with data from the database.
  * 
  **/
-function initMap(rows) {
+function initMap() {
 	// Create variable with OSU coordinates
 	var oregonState = {lat: 44.564466, lng: -123.279528};
 	// Create variable with Center of USA coordinates
@@ -105,10 +105,8 @@ function initMap(rows) {
  **/
 function populateMap(mapData, map){
 
-	var infoWindow = new google.maps.InfoWindow();
-
 	var markers = [];
-
+	
 	for (var i=0; i < mapData.length; i++)
 	{
 		var marker = new google.maps.Marker({
@@ -126,7 +124,7 @@ function populateMap(mapData, map){
 	}
 
 	// Add a marker clusterer to manage the markers.
-	var markerCluster = new MarkerClusterer(map, markers,
+	new MarkerClusterer(map, markers,
 		{imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
 
 	function attachInfoWindow(marker, email) {
@@ -143,7 +141,3 @@ function populateMap(mapData, map){
 		}); 
 	}
 }
-
-
-
-
