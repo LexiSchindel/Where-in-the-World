@@ -94,8 +94,8 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
                 let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
                 let addressResults = JSON.parse(postResponse.results);
 
-                let address = addressResults[0].streetNumber + ' ' + addressResults[0].streetRoute + ' ' + addressResults[0].city + ', ' 
-                    + addressResults[0].state + ' ' + addressResults[0].zipCode;
+                let address = (addressResults[0].streetNumber || '') + ' ' + (addressResults[0].streetRoute || '') + ' ' + (addressResults[0].city || '') + ', ' 
+                    + (addressResults[0].state || '' ) + ' ' + (addressResults[0].zipCode || '' );
 
                 console.log(address);
 
