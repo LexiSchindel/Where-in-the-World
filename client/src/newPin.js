@@ -92,12 +92,18 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
             else {
                 //does db already have email, then we updated
                 let dbHasEmail = JSON.parse(postResponse.dbHasEmail);
+                let addressResults = JSON.parse(postResponse.results);
+
+                let address = addressResults[0].streetNumber + ' ' + addressResults[0].streetRoute + ' ' + addressResults[0].city + ', ' 
+                    + addressResults[0].state + ' ' + addressResults[0].zipCode;
+
+                console.log(address);
 
                 if (dbHasEmail[0].dbHasEmail == true)
                 {
                     // initMap(postResponse);
                     message.textContent = "";
-                    message.textContent = "We updated the address associated with " + email + ".";
+                    message.textContent = "We updated the address associated with " + email + " to " + address + ".";
                     initMap();
                     map.appendChild(message); //append message to the map
                 }
@@ -105,7 +111,7 @@ document.getElementById('postSubmit').addEventListener('click', function(event){
                 {
                     // initMap(postResponse);
                     message.textContent = "";
-                    message.textContent = "Welcome " + email + " to the OSU World family!";
+                    message.textContent = "Welcome " + email + " to the OSU World family! New pin at " + address + ".";
                     initMap();
                     map.appendChild(message); //append message to the map
                 }

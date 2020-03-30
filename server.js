@@ -179,6 +179,9 @@ app.post ("/", async (request, response) => {
   var city;
   var state;
   var country;
+  var streetNumber;
+  var streetRoute;
+  var zipCode;
 
   const client = await new Client({address});
 
@@ -215,10 +218,19 @@ app.post ("/", async (request, response) => {
           else if (r.data.results[0].address_components[i].types[0] == "country") {
             country = r.data.results[0].address_components[i].long_name;
           }
+          else if (r.data.results[0].address_components[i].types[0] == "street_number"){
+            streetNumber = r.data.results[0].address_components[i].long_name;
+          }
+          else if (r.data.results[0].address_components[i].types[0] == "route"){
+            streetRoute = r.data.results[0].address_components[i].long_name;
+          }
+          else if (r.data.results[0].address_components[i].types[0] == "postal_code"){
+            zipCode = r.data.results[0].address_components[i].long_name;
+          }
         }
 
         console.log("latitude ", latitude, "longitude ", longitude);
-        console.log("city ", city, "state ", state, "country ", country);
+        console.log("city ", city, "state ", state, "country ", country, "street", streetNumber, "route", streetRoute);
 
         var results = [];
 
@@ -226,9 +238,15 @@ app.post ("/", async (request, response) => {
           "longitude": longitude,
           "city": city,
           "state": state,
-          "country": country});
+          "country": country,
+          "streetNumber": streetNumber,
+          "streetRoute": streetRoute,
+          "zipCode": zipCode
+        });
 
         var context = {}; //for returning to post request
+
+        context.results = JSON.stringify(results);
 
         //inserts all data from post into database
         pool.query("SELECT email FROM maps WHERE lower(email) = lower($1)", 
@@ -238,7 +256,6 @@ app.post ("/", async (request, response) => {
                 return;
             }
             else{
-              console.log('check email data: ', rows.rows);
 
               //subquery if we already have email
               //update email, then send back new db contents
@@ -246,7 +263,7 @@ app.post ("/", async (request, response) => {
 
                 //inserts all data from post into database
                 pool.query("UPDATE maps SET latitude = $1, longitude = $2, city = $3, state = $4 WHERE email = $5", 
-                  [latitude, longitude, city, state, email], function(err, result){
+                  [latitude, longitude, city, state, email], function(err){
                     if(err){
                         console.log(err);
                         return;
@@ -264,7 +281,7 @@ app.post ("/", async (request, response) => {
               else{
                 //inserts all data from post into database
                 pool.query("INSERT INTO maps(latitude, longitude, city, state, email) VALUES ($1, $2, $3, $4, $5) RETURNING *", 
-                  [latitude, longitude, city, state, email], function(err, result){
+                  [latitude, longitude, city, state, email], function(err){
                     if(err){
                         console.log(err);
                         return;
@@ -272,6 +289,8 @@ app.post ("/", async (request, response) => {
                     else{
                         context.dbHasEmail = JSON.stringify([{'dbHasEmail':false}]);
                         context.noResults = JSON.stringify([{'noResults':false}]);
+
+                        console.log(context);
 
                         response.send(context);
                     }
